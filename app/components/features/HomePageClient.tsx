@@ -2,16 +2,11 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { AnimatePresence } from "framer-motion";
-import { GitHubRepo } from "../../lib/github/fetchRepos";
 import { ProfileView } from "./ProfileView";
 import { PROFILES } from "../../lib/data/profiles";
 import LoadingScreen from "../ui/LoadingScreen";
 
-interface HomePageClientProps {
-  repos: GitHubRepo[];
-}
-
-export default function HomePageClient({ repos }: HomePageClientProps) {
+export default function HomePageClient() {
   const [isLoading, setIsLoading] = useState(true);
   const [showLoader, setShowLoader] = useState(false);
 
@@ -42,7 +37,7 @@ export default function HomePageClient({ repos }: HomePageClientProps) {
 
       <main className="bg-zinc-950 min-h-screen">
         {!isLoading && (
-          <ProfileView profile={PROFILES.joint} repos={repos} />
+          <ProfileView profile={PROFILES.joint} />
         )}
       </main>
     </>

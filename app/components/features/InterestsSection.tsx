@@ -3,7 +3,6 @@
 import { motion } from "framer-motion";
 import { Profile } from "../../lib/data/profiles";
 import React from "react";
-import { useTranslations } from "next-intl";
 import { HeartIcon, TrophyIcon, SparklesIcon } from "@heroicons/react/24/outline";
 
 interface InterestsProps {
@@ -17,8 +16,6 @@ const ICON_MAP: Record<string, any> = {
 };
 
 function InterestsSectionComponent({ profile }: InterestsProps) {
-  const t = useTranslations(`Profiles.${profile.id}.interests`);
-  
   if (!profile.interests) return null;
 
   return (
@@ -31,7 +28,7 @@ function InterestsSectionComponent({ profile }: InterestsProps) {
           className="mb-16 text-center"
         >
           <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-white italic">
-            {t("title")}
+            {profile.interestsTitle}
           </h2>
         </motion.div>
 
@@ -51,10 +48,10 @@ function InterestsSectionComponent({ profile }: InterestsProps) {
                   {Icon && <Icon className="w-6 h-6" />}
                 </div>
                 <h3 className="text-xl font-bold text-white mb-3">
-                  {t(`${interest.id}.label`)}
+                  {interest.label}
                 </h3>
                 <p className="text-zinc-400 text-sm leading-relaxed">
-                  {t(`${interest.id}.desc`)}
+                  {interest.desc}
                 </p>
               </motion.div>
             );

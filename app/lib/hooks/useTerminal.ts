@@ -3,8 +3,6 @@
 import { useCallback, useEffect, useRef, useState, useMemo } from "react";
 import { TerminalEngine } from "../terminal/TerminalEngine";
 import type { OutputLine } from "../terminal/types";
-import { GitHubRepo } from "../github/fetchRepos";
-import { usePulse } from "../pulse/PulseContext";
 
 export type { OutputLine };
 
@@ -12,7 +10,7 @@ const BOOT_SEQUENCE: { text: string; delay: number }[] = [
   { text: "TTdevs OS v2.0.0 — booting...", delay: 180 },
   { text: "Loading kernel modules.............. [  OK  ]", delay: 480 },
   { text: "Establishing secure connection...... [  OK  ]", delay: 820 },
-  { text: "Fetching live pulse data............ [  OK  ]", delay: 1140 },
+  { text: "Loading portfolio data.............. [  OK  ]", delay: 1140 },
   { text: "System ready.", delay: 1440 },
   { text: "", delay: 1600 },
   { text: "▌ TTdevs — Tom & Therese, full-stack developers.", delay: 1800 },
@@ -20,8 +18,7 @@ const BOOT_SEQUENCE: { text: string; delay: number }[] = [
   { text: "", delay: 2200 },
 ];
 
-export function useTerminal(onStart: () => void, repos: GitHubRepo[] = []) {
-  const { nodes } = usePulse();
+export function useTerminal(onStart: () => void) {
   const [bootLines, setBootLines] = useState<OutputLine[]>([]);
   const [booting, setBooting] = useState(true);
   const [history, setHistory] = useState<OutputLine[]>([]);
@@ -32,7 +29,7 @@ export function useTerminal(onStart: () => void, repos: GitHubRepo[] = []) {
   const inputRef = useRef<HTMLInputElement>(null);
   const outputRef = useRef<HTMLDivElement>(null);
 
-  const engine = useMemo(() => new TerminalEngine(repos, nodes), [repos, nodes]);
+  const engine = useMemo(() => new TerminalEngine(), []);
 
   const nextId = () => ++idCounter.current;
 

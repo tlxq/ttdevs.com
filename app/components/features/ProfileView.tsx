@@ -12,15 +12,13 @@ import { InterestsSection } from "./InterestsSection";
 import { ContactSection } from "./ContactSection";
 import ContactModal from "./ContactModal";
 import type { SelectedPerson } from "../../lib/types";
-import { GitHubRepo } from "../../lib/github/fetchRepos";
 
 interface ProfileViewProps {
   profile: Profile;
   backHref?: string;
-  repos?: GitHubRepo[];
 }
 
-export function ProfileView({ profile, backHref, repos = [] }: ProfileViewProps) {
+export function ProfileView({ profile, backHref }: ProfileViewProps) {
   const { scrollToSection, lenis } = useSmoothScroll();
   const [selectedPerson, setSelectedPerson] = useState<SelectedPerson | null>(null);
 
@@ -38,7 +36,7 @@ export function ProfileView({ profile, backHref, repos = [] }: ProfileViewProps)
     <BaseLayout backHref={backHref}>
       <ProfileHero profile={profile} scrollToSection={scrollToSection} />
       <AboutSection profile={profile} />
-      <ProjectsSection profile={profile} repos={repos} />
+      {profile.projects.length > 0 && <ProjectsSection profile={profile} />}
       <SkillsSection profile={profile} />
       {profile.interests && <InterestsSection profile={profile} />}
       <ContactSection onContactClick={openModal} />
