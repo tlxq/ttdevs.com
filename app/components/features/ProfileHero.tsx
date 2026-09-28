@@ -1,11 +1,10 @@
 "use client";
 
-import { Link } from "../../../src/i18n/routing";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { Button } from "../ui/Button";
 import { Profile } from "../../lib/data/profiles";
 import React from "react";
-import { useTranslations } from "next-intl";
 
 import Image from "next/image";
 
@@ -15,7 +14,6 @@ interface HeroProps {
 }
 
 function ProfileHeroComponent({ profile, scrollToSection }: HeroProps) {
-  const t = useTranslations(`Profiles.${profile.id}`);
   const isJoint = profile.id === "joint";
 
   // Joint Profile Layout (Centered Stack)
@@ -35,7 +33,7 @@ function ProfileHeroComponent({ profile, scrollToSection }: HeroProps) {
               animate={{ boxShadow: ["0 0 20px rgba(139,92,246,0)", "0 0 20px rgba(139,92,246,0.2)", "0 0 20px rgba(139,92,246,0)"] }}
               transition={{ duration: 4, repeat: Infinity }}
             >
-              {t("role")}
+              {profile.role}
             </motion.span>
             
             <h1 className="text-7xl md:text-[10rem] font-bold tracking-tighter text-white leading-[0.8]">
@@ -83,7 +81,7 @@ function ProfileHeroComponent({ profile, scrollToSection }: HeroProps) {
             className="max-w-2xl"
           >
             <p className="text-lg md:text-2xl text-slate-400 leading-relaxed mb-12 font-light text-balance">
-              {t("bio")}
+              {profile.bio}
             </p>
 
             <div className="flex flex-wrap items-center justify-center gap-6">
@@ -127,16 +125,16 @@ function ProfileHeroComponent({ profile, scrollToSection }: HeroProps) {
               animate={{ boxShadow: ["0 0 20px rgba(139,92,246,0)", "0 0 20px rgba(139,92,246,0.2)", "0 0 20px rgba(139,92,246,0)"] }}
               transition={{ duration: 4, repeat: Infinity }}
             >
-              {t("role")}
+              {profile.role}
             </motion.span>
             
-            {profile.id === "tom" && (
+            {profile.liaStatus && (
               <motion.span
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 className="inline-block px-4 py-1.5 rounded-lg border border-nebula-secondary/30 bg-nebula-secondary/10 text-[9px] font-bold tracking-widest uppercase text-nebula-secondary font-mono backdrop-blur-sm"
               >
-                {t("liaStatus")}
+                {profile.liaStatus}
               </motion.span>
             )}
           </div>
@@ -146,7 +144,7 @@ function ProfileHeroComponent({ profile, scrollToSection }: HeroProps) {
           </h1>
           
           <p className="mx-auto lg:mx-0 max-w-xl text-lg md:text-2xl text-slate-400 leading-relaxed mb-12 font-light text-balance">
-            {t("bio")}
+            {profile.bio}
           </p>
 
           <div className="flex flex-wrap items-center justify-center lg:justify-start gap-6">

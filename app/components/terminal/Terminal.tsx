@@ -3,19 +3,17 @@
 import React, { useEffect, useState } from "react";
 import { useReducedMotion } from "framer-motion";
 import { useTerminal, type OutputLine } from "../../lib/hooks/useTerminal";
-import { GitHubRepo } from "../../lib/github/fetchRepos";
 
 interface TerminalProps {
   onStart?: () => void;
-  repos?: GitHubRepo[];
   className?: string;
 }
 
-export default function Terminal({ onStart = () => {}, repos = [], className = "" }: TerminalProps) {
+export default function Terminal({ onStart = () => {}, className = "" }: TerminalProps) {
   const { 
     bootLines, booting, history, input, setInput, submit, 
     inputRef, outputRef, transitioning, getCommandNames 
-  } = useTerminal(onStart, repos);
+  } = useTerminal(onStart);
 
   const allLines = [...bootLines, ...history];
 

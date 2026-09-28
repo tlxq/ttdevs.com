@@ -1,14 +1,11 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { usePulse } from "./pulse/PulseContext";
-import React, { useMemo } from "react";
+import React from "react";
 
 function AmbientBackgroundComponent() {
-  const { activityIntensity } = usePulse();
-
-  // Memoize values that don't need to change every render to stabilize animations
-  const intensity = Math.round(activityIntensity * 10) / 10; // Stepped intensity to reduce tiny re-renders
+  // Fixed glow intensity (0 to 1) for the background animation
+  const intensity = 0.3;
 
   return (
     <div className="fixed inset-0 -z-10 nebula-gradient overflow-hidden pointer-events-none" aria-hidden="true">
@@ -67,6 +64,5 @@ function AmbientBackgroundComponent() {
   );
 }
 
-// Wrap in React.memo to prevent re-renders when parent (RootLayout) re-renders 
-// unless the Pulse data actually changes
+// Wrap in React.memo to prevent re-renders when the parent re-renders
 export default React.memo(AmbientBackgroundComponent);

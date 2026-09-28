@@ -1,37 +1,21 @@
 import { ITerminalCommand, CommandResult } from "../types";
-import { GitHubRepo } from "../../github/fetchRepos";
+import { FEATURED_PROJECTS } from "../../data/profiles";
 
 export class ProjectsCommand implements ITerminalCommand {
   name = "projects";
-  description = "Browse our live GitHub ecosystem";
-
-  constructor(private repos: GitHubRepo[] = []) {}
+  description = "Browse our featured projects";
 
   execute(): CommandResult {
-    if (this.repos.length === 0) {
-      return {
-        lines: [
-          { text: "Fetching live ecosystem data...", type: "output" },
-          { text: "No active repositories found in current scope.", type: "error" },
-          { text: "", type: "blank" },
-        ],
-      };
-    }
-
     const lines: CommandResult["lines"] = [
-      { text: "LIVE ECOSYSTEM // GITHUB REPOS", type: "output" },
+      { text: "FEATURED PROJECTS", type: "output" },
       { text: "──────────────────────────────────────────────", type: "output" },
     ];
 
-    this.repos.forEach((repo) => {
-      const owner = repo.owner.login.padEnd(8, " ");
-      const stars = `★ ${repo.stargazers_count}`.padEnd(6, " ");
-      const lang = (repo.language || "N/A").padEnd(12, " ");
-      
-      lines.push({ 
-        text: `→ ${repo.name.padEnd(20, " ")} [${lang}] ${stars} [by ${owner}]`, 
-        type: "output" 
-      });
+    Object.values(FEATURED_PROJECTS).forEach((project) => {
+      lines.push({ text: `→ ${project.title.padEnd(20, " ")} ${project.desc}`, type: "output" });
+      if (project.href) {
+        lines.push({ text: `  ${project.href}`, type: "cyan" });
+      }
     });
 
     lines.push({ text: "──────────────────────────────────────────────", type: "output" });

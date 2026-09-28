@@ -2,19 +2,14 @@
 
 import { motion } from "framer-motion";
 import { Card } from "../ui/Card";
-import { Profile } from "../../lib/data/profiles";
+import { Profile, PROFILES } from "../../lib/data/profiles";
 import React from "react";
-import { useTranslations } from "next-intl";
 
 interface AboutProps {
   profile: Profile;
 }
 
 function AboutSectionComponent({ profile }: AboutProps) {
-  const t = useTranslations(`Profiles.${profile.id}`);
-  const tTom = useTranslations("Profiles.tom");
-  const tTherese = useTranslations("Profiles.therese");
-
   return (
     <section id="about" className="relative px-4 py-32">
       <div className="mx-auto max-w-6xl">
@@ -26,7 +21,7 @@ function AboutSectionComponent({ profile }: AboutProps) {
             className="md:col-span-4"
           >
             <h2 className="text-3xl font-bold tracking-tight text-white mb-4">
-              {t("aboutTitle")}
+              {profile.aboutTitle}
             </h2>
             <div className="h-1 w-12 bg-zinc-700" />
           </motion.div>
@@ -39,18 +34,18 @@ function AboutSectionComponent({ profile }: AboutProps) {
           >
             <Card className="bg-zinc-900/40 p-10 border-white/5">
               <p className="text-xl text-zinc-400 leading-relaxed text-balance">
-                {t("aboutText")}
+                {profile.aboutText}
               </p>
               
               {profile.id === "joint" && (
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 mt-12 pt-12 border-t border-white/5">
                   <div>
-                    <h3 className="text-white font-bold mb-2">Tom // {tTom("role")}</h3>
-                    <p className="text-sm text-zinc-500">{tTom("bio")}</p>
+                    <h3 className="text-white font-bold mb-2">Tom // {PROFILES.tom.role}</h3>
+                    <p className="text-sm text-zinc-500">{PROFILES.tom.bio}</p>
                   </div>
                   <div>
-                    <h3 className="text-white font-bold mb-2">Therese // {tTherese("role")}</h3>
-                    <p className="text-sm text-zinc-500">{tTherese("bio")}</p>
+                    <h3 className="text-white font-bold mb-2">Therese // {PROFILES.therese.role}</h3>
+                    <p className="text-sm text-zinc-500">{PROFILES.therese.bio}</p>
                   </div>
                 </div>
               )}
