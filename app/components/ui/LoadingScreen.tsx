@@ -66,7 +66,7 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
         </div>
 
         <div className="flex justify-center">
-          <span className="text-[9px] uppercase tracking-[0.4em] text-zinc-700 animate-pulse">
+          <span className="text-[9px] uppercase tracking-[0.4em] text-zinc-700 animate-pulse motion-reduce:animate-none">
             TTDEVS // EST. 2024
           </span>
         </div>

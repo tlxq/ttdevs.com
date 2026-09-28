@@ -2,7 +2,7 @@
 
 import { useState, memo } from "react";
 import Link from "next/link";
-import { Button } from "../ui/Button";
+import { Button, ButtonLink } from "../ui/Button";
 import { TerminalModal } from "../terminal/TerminalModal";
 
 export interface HeaderSection {
@@ -44,7 +44,7 @@ function HeaderComponent({ backHref, scrollToSection, sections = [] }: HeaderPro
               onClick={() => setIsTerminalOpen(true)}
               className="hidden lg:flex items-center gap-2 px-3 py-1 rounded-full border border-nebula-accent/20 bg-nebula-accent/5 hover:bg-nebula-accent/10 transition-colors group"
             >
-              <div className="w-1.5 h-1.5 rounded-full bg-nebula-accent animate-pulse" />
+              <div className="w-1.5 h-1.5 rounded-full bg-nebula-accent animate-pulse motion-reduce:animate-none" />
               <span className="text-[10px] font-mono uppercase tracking-widest text-nebula-accent/70 group-hover:text-nebula-accent">Terminal</span>
             </button>
           </div>
@@ -61,9 +61,7 @@ function HeaderComponent({ backHref, scrollToSection, sections = [] }: HeaderPro
 
             <div className="hidden md:flex items-center gap-8">
               {backHref && (
-                <Link href={backHref}>
-                  <Button variant="ghost" size="sm">← Back</Button>
-                </Link>
+                <ButtonLink href={backHref} variant="ghost" size="sm">← Back</ButtonLink>
               )}
               {showSections && (
                 <>
