@@ -53,7 +53,7 @@ export default function DeveloperSelect() {
           transition={{ delay: 0.8 }}
           className="mt-16"
         >
-          <Button variant="ghost" onClick={() => router.push("/portfolio")}>
+          <Button variant="ghost" onClick={() => router.push("/")}>
             View Joint Portfolio →
           </Button>
         </motion.div>

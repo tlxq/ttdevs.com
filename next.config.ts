@@ -8,6 +8,8 @@ const nextConfig: NextConfig = {
     return [
       { source: "/:locale(en|sv)", destination: "/", permanent: true },
       { source: "/:locale(en|sv)/:path*", destination: "/:path*", permanent: true },
+      // /portfolio used to render the same content as the home page
+      { source: "/portfolio", destination: "/", permanent: true },
     ];
   },
 };
