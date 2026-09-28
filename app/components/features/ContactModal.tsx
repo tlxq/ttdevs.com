@@ -67,8 +67,8 @@ export default function ContactModal({ person, onClose }: ContactModalProps) {
             <input type="text" name="company" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden="true" />
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <Input label="Name" name="name" required placeholder="Jane Doe" className="bg-zinc-950/50" />
-              <Input label="Email" name="email" type="email" required placeholder="jane@studio.com" className="bg-zinc-950/50" />
+              <Input label="Name" name="name" required maxLength={100} placeholder="Jane Doe" className="bg-zinc-950/50" />
+              <Input label="Email" name="email" type="email" required maxLength={254} placeholder="jane@studio.com" className="bg-zinc-950/50" />
             </div>
             
             <Input
@@ -76,6 +76,7 @@ export default function ContactModal({ person, onClose }: ContactModalProps) {
               label="Message"
               name="message"
               required
+              maxLength={5000}
               rows={4}
               placeholder="Tell us about your project..."
               className="bg-zinc-950/50"
