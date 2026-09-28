@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "framer-motion";
-import { Button } from "../ui/Button";
+import { motion, useReducedMotion } from "framer-motion";
+import { Button, ButtonLink } from "../ui/Button";
 import { Profile } from "../../lib/data/profiles";
 import React from "react";
 
@@ -15,6 +15,14 @@ interface HeroProps {
 
 function ProfileHeroComponent({ profile, scrollToSection }: HeroProps) {
   const isJoint = profile.id === "joint";
+  const reduceMotion = useReducedMotion();
+  // Infinite glow on the role badge; disabled for prefers-reduced-motion.
+  const badgePulse = reduceMotion
+    ? {}
+    : {
+        animate: { boxShadow: ["0 0 20px rgba(139,92,246,0)", "0 0 20px rgba(139,92,246,0.2)", "0 0 20px rgba(139,92,246,0)"] },
+        transition: { duration: 4, repeat: Infinity },
+      };
 
   // Joint Profile Layout (Centered Stack)
   if (isJoint) {
@@ -30,8 +38,7 @@ function ProfileHeroComponent({ profile, scrollToSection }: HeroProps) {
           >
             <motion.span
               className="mb-6 inline-block px-6 py-2 rounded-full border border-nebula-accent/20 bg-nebula-accent/5 text-[10px] font-bold tracking-[0.3em] uppercase text-nebula-accent font-mono backdrop-blur-sm"
-              animate={{ boxShadow: ["0 0 20px rgba(139,92,246,0)", "0 0 20px rgba(139,92,246,0.2)", "0 0 20px rgba(139,92,246,0)"] }}
-              transition={{ duration: 4, repeat: Infinity }}
+              {...badgePulse}
             >
               {profile.role}
             </motion.span>
@@ -57,7 +64,7 @@ function ProfileHeroComponent({ profile, scrollToSection }: HeroProps) {
                   <Image src="/tom-profile.webp" alt="Tom" fill className="object-cover" priority />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#05050a]/40 to-transparent group-hover:from-nebula-accent/10" />
                   <div className="absolute inset-0 flex items-end justify-center p-8 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <span className="text-xs font-mono tracking-widest text-nebula-accent bg-black/50 backdrop-blur-md px-4 py-2 rounded-full border border-nebula-accent/20">VIEW TOM'S SPACE</span>
+                    <span className="text-xs font-mono tracking-widest text-nebula-accent bg-black/50 backdrop-blur-md px-4 py-2 rounded-full border border-nebula-accent/20">VIEW TOM&apos;S SPACE</span>
                   </div>
                 </div>
               </Link>
@@ -66,7 +73,7 @@ function ProfileHeroComponent({ profile, scrollToSection }: HeroProps) {
                   <Image src="/therese-profile.webp" alt="Therese" fill className="object-cover" priority />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#05050a]/40 to-transparent group-hover:from-nebula-accent/10" />
                   <div className="absolute inset-0 flex items-end justify-center p-8 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <span className="text-xs font-mono tracking-widest text-nebula-accent bg-black/50 backdrop-blur-md px-4 py-2 rounded-full border border-nebula-accent/20">VIEW THERESE'S SPACE</span>
+                    <span className="text-xs font-mono tracking-widest text-nebula-accent bg-black/50 backdrop-blur-md px-4 py-2 rounded-full border border-nebula-accent/20">VIEW THERESE&apos;S SPACE</span>
                   </div>
                 </div>
               </Link>
@@ -85,16 +92,12 @@ function ProfileHeroComponent({ profile, scrollToSection }: HeroProps) {
             </p>
 
             <div className="flex flex-wrap items-center justify-center gap-6">
-              <Link href="/tom">
-                <Button size="lg" variant="primary">
-                  Explore Tom
-                </Button>
-              </Link>
-              <Link href="/therese">
-                <Button size="lg" variant="outline">
-                  Explore Therese
-                </Button>
-              </Link>
+              <ButtonLink href="/tom" size="lg" variant="primary">
+                Explore Tom
+              </ButtonLink>
+              <ButtonLink href="/therese" size="lg" variant="outline">
+                Explore Therese
+              </ButtonLink>
               <Button onClick={() => scrollToSection("contact")} size="lg" variant="ghost">
                 Get in Touch
               </Button>
@@ -122,8 +125,7 @@ function ProfileHeroComponent({ profile, scrollToSection }: HeroProps) {
           <div className="flex flex-col items-center lg:items-start gap-4 mb-6">
             <motion.span
               className="inline-block px-6 py-2 rounded-full border border-nebula-accent/20 bg-nebula-accent/5 text-[10px] font-bold tracking-[0.3em] uppercase text-nebula-accent font-mono backdrop-blur-sm"
-              animate={{ boxShadow: ["0 0 20px rgba(139,92,246,0)", "0 0 20px rgba(139,92,246,0.2)", "0 0 20px rgba(139,92,246,0)"] }}
-              transition={{ duration: 4, repeat: Infinity }}
+              {...badgePulse}
             >
               {profile.role}
             </motion.span>
