@@ -32,11 +32,20 @@ export function ProfileView({ profile, backHref }: ProfileViewProps) {
     lenis?.start();
   }
 
+  const hasProjects = profile.projects.length > 0;
+  // Only link to sections that this profile actually renders.
+  const sections = [
+    { id: "about", label: "About" },
+    ...(hasProjects ? [{ id: "projects", label: "Projects" }] : []),
+    { id: "skills", label: "Skills" },
+    { id: "contact", label: "Contact" },
+  ];
+
   return (
-    <BaseLayout backHref={backHref}>
+    <BaseLayout backHref={backHref} scrollToSection={scrollToSection} sections={sections}>
       <ProfileHero profile={profile} scrollToSection={scrollToSection} />
       <AboutSection profile={profile} />
-      {profile.projects.length > 0 && <ProjectsSection profile={profile} />}
+      {hasProjects && <ProjectsSection profile={profile} />}
       <SkillsSection profile={profile} />
       {profile.interests && <InterestsSection profile={profile} />}
       <ContactSection onContactClick={openModal} />

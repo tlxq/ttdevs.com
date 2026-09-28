@@ -5,13 +5,30 @@ import Link from "next/link";
 import { Button } from "../ui/Button";
 import { TerminalModal } from "../terminal/TerminalModal";
 
+export interface HeaderSection {
+  id: string;
+  label: string;
+}
+
 interface HeaderProps {
   backHref?: string;
   scrollToSection?: (id: string) => void;
+  /** In-page sections to link to. "contact" is shown as a button, the rest as text links. */
+  sections?: HeaderSection[];
 }
 
-function HeaderComponent({ backHref, scrollToSection }: HeaderProps) {
+function HeaderComponent({ backHref, scrollToSection, sections = [] }: HeaderProps) {
   const [isTerminalOpen, setIsTerminalOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const showSections = Boolean(scrollToSection) && sections.length > 0;
+  const textSections = sections.filter((s) => s.id !== "contact");
+  const hasContact = sections.some((s) => s.id === "contact");
+
+  function goTo(id: string) {
+    setIsMenuOpen(false);
+    scrollToSection?.(id);
+  }
 
   return (
     <>
@@ -32,7 +49,7 @@ function HeaderComponent({ backHref, scrollToSection }: HeaderProps) {
             </button>
           </div>
 
-          <nav className="flex items-center gap-4 md:gap-8">
+          <nav className="flex items-center gap-4 md:gap-8" aria-label="Main">
             {/* Mobile Terminal Trigger */}
             <button 
               onClick={() => setIsTerminalOpen(true)}
@@ -43,23 +60,58 @@ function HeaderComponent({ backHref, scrollToSection }: HeaderProps) {
             </button>
 
             <div className="hidden md:flex items-center gap-8">
-              {scrollToSection ? (
+              {backHref && (
+                <Link href={backHref}>
+                  <Button variant="ghost" size="sm">← Back</Button>
+                </Link>
+              )}
+              {showSections && (
                 <>
-                  <button onClick={() => scrollToSection("about")} className="text-sm font-medium text-zinc-400 hover:text-white transition-colors">About</button>
-                  <button onClick={() => scrollToSection("projects")} className="text-sm font-medium text-zinc-400 hover:text-white transition-colors">Projects</button>
-                  <button onClick={() => scrollToSection("skills")} className="text-sm font-medium text-zinc-400 hover:text-white transition-colors">Skills</button>
-                  <Button size="sm" onClick={() => scrollToSection("contact")}>Contact</Button>
+                  {textSections.map((s) => (
+                    <button key={s.id} onClick={() => goTo(s.id)} className="text-sm font-medium text-zinc-400 hover:text-white transition-colors">
+                      {s.label}
+                    </button>
+                  ))}
+                  {hasContact && <Button size="sm" onClick={() => goTo("contact")}>Contact</Button>}
                 </>
-              ) : (
-                backHref && (
-                  <Link href={backHref}>
-                    <Button variant="ghost" size="sm">← Back</Button>
-                  </Link>
-                )
               )}
             </div>
+
+            {/* Mobile menu toggle */}
+            {(showSections || backHref) && (
+              <button
+                onClick={() => setIsMenuOpen((open) => !open)}
+                className="md:hidden p-2 font-mono text-xs uppercase tracking-widest text-zinc-400 hover:text-white transition-colors"
+                aria-expanded={isMenuOpen}
+                aria-controls="mobile-menu"
+              >
+                {isMenuOpen ? "Close" : "Menu"}
+              </button>
+            )}
           </nav>
         </div>
+
+        {isMenuOpen && (
+          <div id="mobile-menu" className="md:hidden border-t border-white/5 bg-zinc-950/95 px-6 py-4">
+            <ul className="flex flex-col gap-1">
+              {showSections &&
+                sections.map((s) => (
+                  <li key={s.id}>
+                    <button onClick={() => goTo(s.id)} className="w-full py-3 text-left text-sm font-medium text-zinc-300 hover:text-white transition-colors">
+                      {s.label}
+                    </button>
+                  </li>
+                ))}
+              {backHref && (
+                <li>
+                  <Link href={backHref} onClick={() => setIsMenuOpen(false)} className="block py-3 text-sm font-medium text-zinc-400 hover:text-white transition-colors">
+                    ← Back
+                  </Link>
+                </li>
+              )}
+            </ul>
+          </div>
+        )}
       </header>
 
       <TerminalModal 
