@@ -19,8 +19,7 @@ export function useScrollSnap(lenis: Lenis | null) {
     let snapping = false;
     let cooldown: ReturnType<typeof setTimeout> | null = null;
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const onScroll = ({ velocity }: any) => {
+    const onScroll = ({ velocity }: Lenis) => {
       if (snapping) return;
       if (Math.abs(velocity) > 0.04) {
         if (cooldown) { clearTimeout(cooldown); cooldown = null; }
@@ -54,11 +53,9 @@ export function useScrollSnap(lenis: Lenis | null) {
       }, 220);
     };
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (lenis as any).on("scroll", onScroll);
+    lenis.on("scroll", onScroll);
     return () => {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (lenis as any).off("scroll", onScroll);
+      lenis.off("scroll", onScroll);
       if (cooldown) clearTimeout(cooldown);
     };
   }, [lenis]);

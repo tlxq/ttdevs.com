@@ -45,8 +45,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 
     return (
       <motion.button
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        ref={ref as any}
+        ref={ref}
         whileHover={{ scale: 1.02, y: -1 }}
         whileTap={{ scale: 0.98 }}
         className={buttonClasses(variant, size, className)}

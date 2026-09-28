@@ -17,7 +17,7 @@ interface SkillsProps {
   profile: Profile;
 }
 
-const CATEGORY_ICONS: Record<string, any> = {
+const CATEGORY_ICONS: Record<string, React.ComponentType<React.SVGProps<SVGSVGElement>>> = {
   Frontend: PaintBrushIcon,
   Backend: ServerStackIcon,
   Fullstack: GlobeAltIcon,

@@ -9,7 +9,7 @@ interface InterestsProps {
   profile: Profile;
 }
 
-const ICON_MAP: Record<string, any> = {
+const ICON_MAP: Record<string, React.ComponentType<React.SVGProps<SVGSVGElement>>> = {
   football: TrophyIcon,
   gym: HeartIcon,
   cats: SparklesIcon,
