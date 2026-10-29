@@ -118,31 +118,23 @@ function Line({ line, typewrite = false }: LineProps) {
 
 function TypewriterLine({ text, colorClass }: { text: string; colorClass: string }) {
   const reduced = useReducedMotion();
-  const [len, setLen] = useState(reduced ? text.length : 0);
-  const [done, setDone] = useState(reduced || text.length === 0);
+  const [typed, setTyped] = useState({ text, len: 0 });
 
   useEffect(() => {
-    if (reduced || text.length === 0) {
-      setLen(text.length);
-      setDone(true);
-      return;
-    }
-
-    setLen(0);
-    setDone(false);
+    if (reduced || text.length === 0) return;
 
     let i = 0;
-    const speed = text.length > 100 ? 2 : 8; 
+    const speed = text.length > 100 ? 2 : 8;
     const id = setInterval(() => {
       i++;
-      setLen(i);
-      if (i >= text.length) {
-        clearInterval(id);
-        setDone(true);
-      }
+      setTyped({ text, len: i });
+      if (i >= text.length) clearInterval(id);
     }, speed);
     return () => clearInterval(id);
   }, [text, reduced]);
+
+  const len = reduced ? text.length : typed.text === text ? Math.min(typed.len, text.length) : 0;
+  const done = len >= text.length;
 
   return (
     <div className={`leading-relaxed whitespace-pre-wrap break-words ${colorClass}`}>
