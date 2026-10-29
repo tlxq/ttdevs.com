@@ -1,0 +1,17 @@
+# Repo kit (~/.1dot/kit): `mise run check` is what pre-push and CI run, `mise run format` what pre-commit runs.
+[tools]
+node = "24" # Vercel project ttdevs-website builds on Node 24.x
+
+[tasks.check]
+description = "Everything CI and pre-push run"
+run = [
+  "[ -d node_modules ] || npm ci",
+  "npx next typegen",
+  "npx tsc --noEmit",
+  "npx eslint .",
+  "npx next build",
+]
+
+[tasks.format]
+description = "Format the files given (pre-commit passes the staged ones and restages them)"
+run = "npx prettier --write --ignore-unknown"

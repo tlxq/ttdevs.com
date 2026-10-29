@@ -1,0 +1,26 @@
+# Repo kit (~/.1dot/kit, made by `dot kit`): weekly, minor + patch in one PR, majors one by one,
+# 3 days' wait so a bad release can be pulled before it reaches us.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directories:
+      - "/"
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 3
+    groups:
+      minor-and-patch:
+        patterns: ["*"]
+        update-types: [minor, patch]
+  - package-ecosystem: npm
+    directories:
+      - "/"
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 3
+    groups:
+      minor-and-patch:
+        patterns: ["*"]
+        update-types: [minor, patch]
