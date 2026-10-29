@@ -1,0 +1,14 @@
+# Repo kit (~/.1dot/kit, applied by `dot kit`). The same `mise run check` runs in CI.
+pre-commit:
+  parallel: true
+  jobs:
+    - name: secrets
+      run: gitleaks git --pre-commit --staged --redact --no-banner
+    - name: format
+      run: mise run format {staged_files}
+      stage_fixed: true
+
+pre-push:
+  jobs:
+    - name: check
+      run: mise run check

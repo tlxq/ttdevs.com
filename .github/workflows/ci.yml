@@ -1,0 +1,50 @@
+# Repo kit (~/.1dot/kit, applied by `dot kit`). Branch rules require only the `ci` job:
+# add a repo's own jobs to its `needs` list.
+name: ci
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+  push:
+    branches: [main, master]
+  merge_group:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: jdx/mise-action@6be3c7ed4c21d4f76b208d351d95aac273ebb76d # v5.2.4
+      - run: mise run check
+
+  secrets:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      - uses: jdx/mise-action@6be3c7ed4c21d4f76b208d351d95aac273ebb76d # v5.2.4
+        with:
+          install: false
+      - env:
+          BASE: ${{ github.base_ref }}
+        run: mise exec gitleaks@8.30.1 -- gitleaks git --redact --no-banner --log-opts="origin/$BASE..HEAD"
+
+  ci:
+    if: always()
+    needs: [check, secrets]
+    runs-on: ubuntu-latest
+    steps:
+      - env:
+          RESULTS: ${{ join(needs.*.result, ' ') }}
+        run: |
+          echo "jobs: $RESULTS"
+          ! printf '%s\n' $RESULTS | grep -qvxE 'success|skipped'
